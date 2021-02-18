@@ -53,7 +53,7 @@ class ToDoElement extends HTMLLIElement {
         this._deleteSpan.appendChild(this._deleteButton)
 
         this.addEventListener("dragstart", (ev) => {
-            ev.dataTransfer.setData("id", this.getId())
+            return false
         })
 
     }
