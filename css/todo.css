@@ -1,6 +1,7 @@
 .todo {
   text-align: left;
   cursor: move;
+  user-select: none;
 }
 .todo__btn-delete {
   color: white;

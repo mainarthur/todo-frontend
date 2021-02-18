@@ -17,6 +17,7 @@
   vertical-align: middle;
   padding: 5px;
   text-align: center;
+  user-select: none;
 }
 
 .root {
@@ -94,6 +95,7 @@ ul {
 .todo {
   text-align: left;
   cursor: move;
+  user-select: none;
 }
 .todo__btn-delete {
   color: white;

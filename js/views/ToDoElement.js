@@ -59,13 +59,21 @@ class ToDoElement extends HTMLLIElement {
         let currentDropable = null
         const self = this
 
-        this.addEventListener("onmousedown", (ev) => {
-            const shiftX = ev.clientX - this.getBoundingClientRect().left
-            const shiftY = ev.clientY - this.getBoundingClientRect().top
+        this.addEventListener("mousedown", (ev) => {
+            const rect = this.getBoundingClientRect()
+            const shiftX = ev.clientX - rect.left
+            const shiftY = ev.clientY - rect.top
 
+            const ghostDiv = document.createElement("div")
+            
+            ghostDiv.style.width = `${rect.right - rect.left}px`
+            ghostDiv.style.height = `${rect.bottom - rect.top}px`
+            ghostDiv.style.border = "1px dotted rgba(66,66,66,0.3)"
+
+            this.style.width = `${rect.right - rect.left}px`
             this.style.position = "absolute"
+            this.style.backgroundColor = "white"
             this.style.zIndex = 666
-
 
             moveAt(ev.pageX, ev.pageY);
 
@@ -81,11 +89,66 @@ class ToDoElement extends HTMLLIElement {
                 const elementBelow = document.elementFromPoint(ev.clientX, ev.clientY)
                 self.hidden = false
 
-                if(!elementBelow) {
+                if (!elementBelow) {
                     return
                 }
 
-                
+                currentDropable = elementBelow
+
+                if(currentDropable.tagName.toUpperCase() == "LI") {
+                    currentDropable.before(ghostDiv)
+                } else if(currentDropable.classList.contains("bottom-drag")) {
+                    self.parentElement.append(ghostDiv)
+                }
+            }
+
+            document.addEventListener("mousemove", onMouseMove)
+
+            self.onmouseup = () => {
+                document.removeEventListener("mousemove", onMouseMove)
+                self.onmouseup = null
+
+                if (currentDropable) {
+                    let target = currentDropable, i = 0;
+                    while (target != null && (target?.tagName?.toUpperCase() != "LI" && !target?.classList?.contains("bottom-drag")) && i != 10) {
+                        i++
+                        target = target.parentElement
+                    }
+
+                    if (target) {
+                        if (target.tagName.toUpperCase() == "LI") {
+                            target.before(self)
+                            const toDo = todos.get(self.getId())
+
+                            const nextToDoPosition = todos.get(target.id).position
+                            let prevToDoPosition
+
+                            if (self.previousElementSibling) {
+                                const prevToDo = todos.get(self.previousElementSibling.id)
+
+                                prevToDoPosition = prevToDo.position
+                            } else {
+                                prevToDoPosition = 0
+                            }
+
+                            toDo.position = (prevToDoPosition + nextToDoPosition) / 2
+
+                        } else if (target.classList.contains("bottom-drag")) {
+                            self?.parentElement?.append(self)
+
+                            const toDo = todos.get(self.getId())
+
+                            if (self.previousElementSibling) {
+                                const prevToDo = todos.get(self.previousElementSibling.previousElementSibling.id)
+
+                                toDo.position = (prevToDo.position + todos.size() + 1) / 2
+                            }
+                        }
+
+                    }
+                    self.removeAttribute("style")
+                    ghostDiv.remove()
+                }
             }
 
         })
