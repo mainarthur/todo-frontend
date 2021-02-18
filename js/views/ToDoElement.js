@@ -23,7 +23,7 @@ class ToDoElement extends HTMLLIElement {
     constructor() {
         super()
 
-        this.draggable = true
+        this.draggable = false
         this.className = ToDoElement.TODO_CLASSNAME
 
         this._toDo = todos.get(this.getId())
@@ -54,6 +54,40 @@ class ToDoElement extends HTMLLIElement {
 
         this.addEventListener("dragstart", (ev) => {
             return false
+        })
+
+        let currentDropable = null
+        const self = this
+
+        this.addEventListener("onmousedown", (ev) => {
+            const shiftX = ev.clientX - this.getBoundingClientRect().left
+            const shiftY = ev.clientY - this.getBoundingClientRect().top
+
+            this.style.position = "absolute"
+            this.style.zIndex = 666
+
+
+            moveAt(ev.pageX, ev.pageY);
+
+            function moveAt(pageX, pageY) {
+                self.style.left = pageX - shiftX + 'px';
+                self.style.top = pageY - shiftY + 'px';
+            }
+
+            function onMouseMove(ev) {
+                moveAt(ev.pageX, ev.pageY);
+
+                self.hidden = true
+                const elementBelow = document.elementFromPoint(ev.clientX, ev.clientY)
+                self.hidden = false
+
+                if(!elementBelow) {
+                    return
+                }
+
+                
+            }
+
         })
 
     }
