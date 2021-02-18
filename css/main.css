@@ -1,0 +1,191 @@
+.card {
+  background-color: white;
+  width: 30vw;
+  padding: 1vw;
+  margin-left: 34vw;
+  margin-right: 34vw;
+  margin-top: 2vw;
+  margin-bottom: 2vw;
+}
+
+.btn {
+  color: #444;
+  border: 1px solid #CCC;
+  background: #DDD;
+  box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  vertical-align: middle;
+  padding: 5px;
+  text-align: center;
+}
+
+.root {
+  text-align: center;
+}
+
+.title {
+  color: white;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea,
+html input[type=button],
+input[type=reset],
+input[type=submit],
+button[disabled],
+html input[disabled],
+button::-moz-focus-inner,
+input::-moz-focus-inner,
+input[type=checkbox],
+input[type=radio],
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button,
+input[type=search],
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  font-size: 100%;
+  outline: none;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+button:focus,
+input:focus,
+optgroup:focus,
+select:focus,
+textarea:focus,
+html input[type=button]:focus,
+input[type=reset]:focus,
+input[type=submit]:focus,
+button[disabled]:focus,
+html input[disabled]:focus,
+button::-moz-focus-inner:focus,
+input::-moz-focus-inner:focus,
+input[type=checkbox]:focus,
+input[type=radio]:focus,
+input[type=number]::-webkit-inner-spin-button:focus,
+input[type=number]::-webkit-outer-spin-button:focus,
+input[type=search]:focus,
+input[type=search]::-webkit-search-cancel-button:focus,
+input[type=search]::-webkit-search-decoration:focus {
+  outline: none;
+}
+
+.body {
+  background: #ff494c;
+  background: linear-gradient(90deg, #ff494c 0%, #ff5c7f 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serifd;
+  font-size: 150%;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.todo {
+  text-align: left;
+  cursor: move;
+}
+.todo__btn-delete {
+  color: white;
+  background-color: #ff494c;
+  border: none;
+}
+.todo__btn-delete:hover {
+  background-color: #ff5c7f;
+}
+.todo__btn-delete:active {
+  background-color: #5ea9ff;
+}
+.todo__btn-delete:focus {
+  outline: none;
+}
+.todo_centered-horizontally {
+  float: right;
+  line-height: normal;
+  vertical-align: middle;
+}
+.todo__divider {
+  border-color: #5ea9ff;
+}
+.todo__text, .todo__text_done {
+  word-wrap: break-word;
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+.todo__text_done {
+  color: #ff494c;
+  text-decoration: line-through;
+}
+
+.new-task {
+  display: flex;
+}
+.new-task__btn-add {
+  display: inline-block;
+  background-color: white;
+  width: 6vw;
+  height: 100%;
+  color: #5ea9ff;
+  font-weight: bold;
+}
+.new-task__btn-add:hover {
+  color: #ff5c7f;
+}
+.new-task__btn-add:active {
+  color: #ff494c;
+}
+.new-task__btn-add:focus {
+  outline: none;
+}
+.new-task__form {
+  margin: auto;
+}
+
+.todos {
+  text-align: left;
+}
+.todos__btn-clear {
+  position: relative;
+  right: 0;
+  top: 0;
+  color: #ff494c;
+}
+.todos__btn-clear:focus {
+  outline: none;
+}
+.todos__btn-clear:hover {
+  color: #ff5c7f;
+}
+.todos__btn-clear:active {
+  color: #5ea9ff;
+}
+.todos_center {
+  background-color: white;
+  text-align: center;
+}
+
+.todo-list {
+  padding: 0;
+  margin: 0.5vw 0.5vw 0 0.5vw;
+}
+
+#todos-card {
+  padding-bottom: 0;
+}
+
+.bottom-drag {
+  width: 100%;
+  height: 1.5vw;
+}
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>To-do List</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/TextField.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="body">
+    <div class="root">
+        <h1 class="title">TO-DO LIST</h1>
+        <div class="card">
+            <div class="new-task">
+                <form class="new-task__form" id="main-form">
+                    <div is="text-field" class="new-task__input" type="text" id="todo-text" placeholder="NEW TASK"></div>
+                    <div id="add-todo" class="btn new-task__btn-add">ADD</div>
+                </form>
+            </div>
+        </div>
+        <div class="card" id="todos-card">
+            <div class="todos">
+                <div class="btn todos_center">
+                    <div class="todos__btn-clear">
+                        CLEAR ALL
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/EventEmitter.js"></script>
+    <script src="/js/models/ToDo.js"></script>
+    <script src="/js/models/ToDoList.js"></script>
+    <script src="/js/views/ToDoElement.js"></script>
+    <script src="/js/views/ToDoListElement.js"></script>
+    <script src="/js/views/TextField.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

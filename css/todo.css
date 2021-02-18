@@ -1,0 +1,37 @@
+.todo {
+  text-align: left;
+  cursor: move;
+}
+.todo__btn-delete {
+  color: white;
+  background-color: #ff494c;
+  border: none;
+}
+.todo__btn-delete:hover {
+  background-color: #ff5c7f;
+}
+.todo__btn-delete:active {
+  background-color: #5ea9ff;
+}
+.todo__btn-delete:focus {
+  outline: none;
+}
+.todo_centered-horizontally {
+  float: right;
+  line-height: normal;
+  vertical-align: middle;
+}
+.todo__divider {
+  border-color: #5ea9ff;
+}
+.todo__text, .todo__text_done {
+  word-wrap: break-word;
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+.todo__text_done {
+  color: #ff494c;
+  text-decoration: line-through;
+}
+
+/*# sourceMappingURL=todo.css.map */

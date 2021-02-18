@@ -1,0 +1,92 @@
+.textfield {
+  display: inline-block;
+}
+.textfield__floating {
+  display: block;
+  position: relative;
+}
+.textfield__floating label,
+.textfield__floating > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: text;
+  font-size: 75%;
+  opacity: 1;
+  transition: all 0.2s;
+}
+.textfield__input {
+  width: 100%;
+  outline: none;
+  box-shadow: none !important;
+  border: none !important;
+  font-size: inherit;
+  padding-top: 1em;
+  margin-bottom: 2px;
+}
+.textfield__input::placeholder {
+  opacity: 1;
+  transition: all 0.2s;
+}
+.textfield__input:placeholder-shown:not(:focus)::placeholder {
+  opacity: 0;
+}
+.textfield__input:placeholder-shown:not(:focus) + * {
+  font-size: 150%;
+  opacity: 0.5;
+  top: 0.25em;
+}
+.textfield__input:focus {
+  outline: none;
+}
+.textfield__label_error {
+  opacity: 0;
+  padding: 3px;
+  color: #ff494c;
+  font-weight: 300;
+  font-size: large;
+}
+.textfield__label_error-visible {
+  transition: opacity 1s linear;
+  opacity: 1;
+}
+.textfield__border {
+  border-bottom: 1px solid #5ea9ff;
+  position: relative;
+}
+.textfield__border_animated {
+  content: "";
+  position: absolute;
+  height: 3px;
+  top: 0;
+  width: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff5c7f;
+  z-index: 666;
+}
+.textfield__border_maximizing {
+  animation: maximize 1s linear forwards;
+}
+.textfield__border_minimizing {
+  animation: minimize 1s linear forwards;
+}
+
+@keyframes maximize {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes minimize {
+  to {
+    width: 0%;
+  }
+  from {
+    width: 100%;
+  }
+}
+
+/*# sourceMappingURL=TextField.css.map */

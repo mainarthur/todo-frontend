@@ -1,0 +1,28 @@
+@import "../../scss/styles";
+@import "../../scss/TextField";
+
+.login-form {
+  &__btn {
+    &-login {
+      padding-top: 1vw;
+      padding-bottom: 1vw;
+      width: 100%;
+      border-radius: 5px;
+      margin-top: 3vw;
+      color: $white;
+      background-color: $secondary-color;
+    }
+
+    &-login:hover {
+      background-color: $base-color-lighter;
+    }
+
+    &-login:active {
+      background-color: $base-color;
+    }
+  }
+
+  text-align: left;
+}
+
+
