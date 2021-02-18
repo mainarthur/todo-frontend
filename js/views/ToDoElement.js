@@ -110,14 +110,16 @@ class ToDoElement extends HTMLLIElement {
 
                 if (currentDropable) {
                     let target = currentDropable, i = 0;
-                    while (target != null && (target?.tagName?.toUpperCase() != "LI" && !target?.classList?.contains("bottom-drag")) && i != 10) {
+                    while (target != null && target != ghostDiv && (target?.tagName?.toUpperCase() != "LI" && !target?.classList?.contains("bottom-drag")) && i != 10) {
                         i++
                         target = target.parentElement
                     }
 
                     if (target) {
                         if (target.tagName.toUpperCase() == "LI") {
+                            console.log("LI")
                             target.before(self)
+                            ghostDiv?.remove()
                             const toDo = todos.get(self.getId())
 
                             const nextToDoPosition = todos.get(target.id).position
@@ -137,17 +139,45 @@ class ToDoElement extends HTMLLIElement {
                             self?.parentElement?.append(self)
 
                             const toDo = todos.get(self.getId())
+                            ghostDiv?.remove()
 
                             if (self.previousElementSibling) {
-                                const prevToDo = todos.get(self.previousElementSibling.previousElementSibling.id)
+                                const prevToDo = todos.get(self.previousElementSibling.id)
 
                                 toDo.position = (prevToDo.position + todos.size() + 1) / 2
+                            }
+                        } else if(target == ghostDiv) {
+                            console.log("GHOST DIV")
+                            target.before(self)
+                            ghostDiv?.remove()
+                            const toDo = todos.get(self.getId())
+
+                            const nextToDoPosition = todos.get(self.nextElementSibling.id).position
+
+                            if(!nextToDoPosition) {
+                                if (self.previousElementSibling) {
+                                    const prevToDo = todos.get(self.previousElementSibling.id)
+    
+                                    toDo.position = (prevToDo.position + todos.size() + 1) / 2
+                                }
+                            } else {
+                                let prevToDoPosition
+
+                                if (self.previousElementSibling) {
+                                    const prevToDo = todos.get(self.previousElementSibling.id)
+    
+                                    prevToDoPosition = prevToDo.position
+                                } else {
+                                    prevToDoPosition = 0
+                                }
+    
+                                toDo.position = (prevToDoPosition + nextToDoPosition) / 2
                             }
                         }
 
                     }
                     self.removeAttribute("style")
-                    ghostDiv.remove()
+                    ghostDiv?.remove()
                 }
             }
 
