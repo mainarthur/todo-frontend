@@ -1,7 +1,3 @@
-if(localStorage.getItem("logined") == "1") {
-    location.href = "/"
-}
-
 const users = [
     {email: "test@test.com", id: 1, password: "123"},
     {email: "root@test.com", id: 2, password: "123"},

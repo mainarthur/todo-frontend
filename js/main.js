@@ -1,13 +1,10 @@
-if (localStorage.getItem("logined") != "1") {
-    location.href = "/login/"
-}
-
 const todos = new ToDoList()
 
 const toDoTextInput = document.getElementById("todo-text")
 const addToDoButton = document.getElementById("add-todo")
 const toDosUl = document.createElement("ul", { is: "todo-list" })
 const clearAllButton = document.querySelector(".todos__btn-clear")
+const logoutButton = document.querySelector(".todos__btn-logout")
 const toDosCard = document.querySelector("#todos-card")
 const bottomDraggingElement =  document.createElement("div")
 
@@ -20,45 +17,10 @@ toDosUl.className = "todo-list"
 
 bottomDraggingElement.className = "bottom-drag"
 
-toDosUl.addEventListener("orderupdated", () => {
-    [...toDosUl.children].map((ch, i) => {
-        const toDo = todos.get(ch.id)
-        toDo.position = i
-        connectDb((err, db) => {
-            if (err)
-                return console.log(err)
-
-            const transaction = db.transaction([storeName], "readwrite")
-            const objectStore = transaction.objectStore(storeName)
-
-            objectStore.put(toDo.toJSON())
-        })
-    })
-})
 
 addToDoButton.addEventListener("click", addToDoHandler)
 mainForm.addEventListener("submit", addToDoHandler)
-bottomDraggingElement.addEventListener("dragover", ToDoListElements.onDragOver)
-bottomDraggingElement.addEventListener("drop", (ev) => {
-    const { target} = ev
-    ev.preventDefault()
-    const data = ev.dataTransfer.getData("id");
-    const element = document.getElementById(data)
 
-    if(target.classList.contains("bottom-drag")) {
-        toDosUl.append(element)
-        
-
-        const toDo = todos.get(data)
-
-        if(element.previousElementSibling) {
-            const prevToDo = todos.get(element.previousElementSibling.id)
-
-            toDo.position = (prevToDo.position + todos.size() + 1)/2
-        }
-    }
-
-})
 
 function addToDoHandler(ev) {
     ev.preventDefault()
@@ -80,7 +42,6 @@ function addToDoHandler(ev) {
     todos.add(toDo)
 
 
-
     connectDb((err, db) => {
         if (err)
             return console.log(err)
@@ -100,8 +61,13 @@ function addToDoHandler(ev) {
 
 }
 
-clearAllButton.addEventListener("click", function (ev) {
+clearAllButton.addEventListener("click", () => {
     todos.clear()
+})
+
+logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("token")
+    location.href = "/login/"
 })
 
 
