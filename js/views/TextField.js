@@ -240,6 +240,7 @@ class TextField extends HTMLDivElement {
     }
 
     renderInput() {
+        this._input.type = this.type
         this._input.placeholder = this.placeholder
         this._input.value = this.value || this.getAttribute("value") 
         this._input.name = this.name

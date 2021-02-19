@@ -1,9 +1,9 @@
 const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const nameRegexp = /^([a-z]{2,}|[а-яё]{2,})$/
-const lowercaseRegexp = /[a-z]/
-const upperCaseRegexp = /[A-Z]/
-const numbersRegexp = /[0-9]/
-const specialSymbolsRegexp = /[\-\:\;\]\!\?\,\#\\\>\[\+\^\}\&\'\)\=\(\~\*\_\@\$\.\%\<\{\"\/\\]/ // 
+const lowercaseRegexp = /[a-z]/g
+const upperCaseRegexp = /[A-Z]/g
+const numbersRegexp = /[0-9]/g
+const specialSymbolsRegexp = /[\-\:\;\]\!\?\,\#\\\>\[\+\^\}\&\'\)\=\(\~\*\_\@\$\.\%\<\{\"\/\\]/g
 
 
 

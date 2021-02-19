@@ -15,29 +15,40 @@ function onSubmit(ev) {
         return
     }
 
-    const user = users.find(u => u.email == emailTextField.value)
+    let { value: email } = emailTextField, { value: password } = passwordTextField
 
-    if(!user) {
-        emailTextField.invalid = true
-        return
-    } 
+    email = email.trim()
+
+    password = password.trim()
+
     if(emailTextField.invalid) {
         emailTextField.invalid = false
     }
-
-
-    if(user.password !== passwordTextField.value) {
-        passwordTextField.invalid = true
-        return
-    } 
-    if(passwordTextField.invalid){
+    if(passwordTextField.invalid) {
         passwordTextField.invalid = false
     }
 
-    localStorage.setItem("logined", "1")
-    localStorage.setItem("email", user.email)
-    localStorage.setItem("id", user.id)
-    location.href = "/"
+    if(email === "") {
+        emailTextField.errorText = "Email is required!"
+        emailTextField.invalid = true
+    }
+
+    if(!isValidEmail(email)) {
+        emailTextField.errorText = "Email format is invalid!"
+        emailTextField.invalid = true
+    }
+
+    if(password === "") {
+        passwordTextField.errorText = "Password is required!"
+        passwordTextField.invalid = true
+    }
+
+    if(!isValidPassword(password)) {
+        passwordTextField.errorText = "Use 8 or more characters with a mix of lowercase and uppercase letters, numbers & symbols"
+        passwordTextField.invalid = true
+    }
+
+    
 }
 
 
