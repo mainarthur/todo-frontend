@@ -152,15 +152,14 @@ class ToDoElement extends HTMLLIElement {
                             ghostDiv?.remove()
                             const toDo = todos.get(self.getId())
 
-                            const nextToDoPosition = todos.get(self.nextElementSibling.id).position
-
-                            if(!nextToDoPosition) {
+                            if(!self.nextElementSibling) {
                                 if (self.previousElementSibling) {
                                     const prevToDo = todos.get(self.previousElementSibling.id)
     
                                     toDo.position = (prevToDo.position + todos.size() + 1) / 2
                                 }
                             } else {
+                                const nextToDoPosition = todos.get(self?.nextElementSibling.id).position
                                 let prevToDoPosition
 
                                 if (self.previousElementSibling) {

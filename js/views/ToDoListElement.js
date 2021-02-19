@@ -22,6 +22,7 @@ class ToDoListElements extends HTMLUListElement {
 
         if (targetElement.classList.contains(ToDoElement.DELETE_BUTTON_CLASSNAME)) {
             todos.delete(targetElement.dataset.id)
+            ev.stopPropagation()
         }
     }
 
@@ -34,6 +35,7 @@ class ToDoListElements extends HTMLUListElement {
             const todo = todos.get(targetElement.dataset.id)
 
             todo.done = targetElement.checked
+            ev.stopPropagation()
         }
     }
 }

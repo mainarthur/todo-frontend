@@ -13,7 +13,11 @@ class ToDoList extends EventEmitter {
         this._todos.push(toDo)
 
         if(toDo.position == -1) {
-            toDo.position = this._todos.length
+            if(this._todos.length > 0) {
+                toDo.position = this._todos[this._todos.length - 1].position + 1
+            } else {
+                toDo.position = 0
+            }
         }
         this.emit("todo", toDo)
     }
