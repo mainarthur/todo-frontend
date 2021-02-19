@@ -67,7 +67,7 @@ async function onSubmit(ev) {
         return
     }
 
-  try {
+  try { 
         const result = await fetch("http://api.todolist.local/auth/register", {
             method: "POST",
             mode: "cors",
@@ -84,7 +84,7 @@ async function onSubmit(ev) {
 
             localStorage.setItem("token", response.access_token)
             localStorage.setItem("refresh_token", response.refresh_token)
-            
+
         }
   } catch (err) {
       console.log(err)
