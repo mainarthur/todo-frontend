@@ -22,6 +22,25 @@
     }
   }
 
+  &__register {
+    &-link {
+      &:hover {
+        color: $base-color-lighter;
+      }
+  
+      &:active {
+        color: $base-color;
+      }
+
+      color: $secondary-color;
+    }
+
+    text-align: center;
+
+   font-weight: 300;
+   margin-top: 0.8vw;
+  }
+
   text-align: left;
 }
 

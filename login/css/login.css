@@ -140,6 +140,7 @@ ul {
   color: #ff494c;
   font-weight: 300;
   font-size: large;
+  margin-top: 1px;
 }
 .textfield__label_error-visible {
   transition: opacity 1s linear;
@@ -200,6 +201,20 @@ ul {
 }
 .login-form__btn-login:active {
   background-color: #ff494c;
+}
+.login-form__register {
+  text-align: center;
+  font-weight: 300;
+  margin-top: 0.8vw;
+}
+.login-form__register-link {
+  color: #5ea9ff;
+}
+.login-form__register-link:hover {
+  color: #ff5c7f;
+}
+.login-form__register-link:active {
+  color: #ff494c;
 }
 
 /*# sourceMappingURL=login.css.map */

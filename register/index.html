@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/register/css/register.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/js/views/TextField.js"></script>
+    <script src="/js/utils.js"></script>
     <script>
         if(localStorage.getItem("token"))
             location.href = "/"
@@ -23,6 +24,7 @@
                     <div is="text-field" class="register-form__password" placeholder="Password" type="password" name="Password" error-text="Password is too weak"></div>
 
                     <div class="btn register-form__btn-register ">REGISTER</div>
+                    <div class="register-form__login">Already have an account? <a href="/login/" class="register-form__login-link">Login</a></div>
                 </form>
             </div>
         </div>
