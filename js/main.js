@@ -137,6 +137,8 @@ todos.on("todo", (toDo) => {
     })
 
     toDo.on("position-changed", () => {
+        console.log("New position")
+        console.log(toDo.position)
         updateToDo(toDo)
     })
 

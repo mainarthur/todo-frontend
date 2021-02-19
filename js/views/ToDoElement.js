@@ -60,6 +60,12 @@ class ToDoElement extends HTMLLIElement {
         const self = this
 
         this.addEventListener("mousedown", (ev) => {
+            if(ev.button != 0)
+                return;
+
+            if(ev?.target?.classList?.contains(ToDoElement.DONE_CHECKBOX_CLASSNAME) || ev?.target?.classList?.contains(ToDoElement.DELETE_BUTTON_CLASSNAME))
+                return;
+                
             const rect = this.getBoundingClientRect()
             const shiftX = ev.clientX - rect.left
             const shiftY = ev.clientY - rect.top
@@ -159,7 +165,7 @@ class ToDoElement extends HTMLLIElement {
                                     toDo.position = (prevToDo.position + todos.size() + 1) / 2
                                 }
                             } else {
-                                const nextToDoPosition = todos.get(self?.nextElementSibling.id).position
+                                const nextToDoPosition = todos.get(self.nextElementSibling.id).position
                                 let prevToDoPosition
 
                                 if (self.previousElementSibling) {

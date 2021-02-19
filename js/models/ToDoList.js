@@ -10,7 +10,6 @@ class ToDoList extends EventEmitter {
             throw new Error("To-Do list already contains that To-Do")
         }
 
-        this._todos.push(toDo)
 
         if(toDo.position == -1) {
             if(this._todos.length > 0) {
@@ -19,6 +18,7 @@ class ToDoList extends EventEmitter {
                 toDo.position = 0
             }
         }
+        this._todos.push(toDo)
         this.emit("todo", toDo)
     }
 
