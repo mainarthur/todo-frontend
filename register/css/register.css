@@ -187,6 +187,19 @@ ul {
 .register-form {
   text-align: left;
 }
+.register-form__form-request-error {
+  opacity: 0;
+  padding: 3px;
+  color: #ff494c;
+  font-weight: 300;
+  font-size: large;
+  margin-top: 1px;
+  text-align: center;
+}
+.register-form__form-request-error_visible {
+  transition: opacity 1s linear;
+  opacity: 1;
+}
 .register-form__btn-register {
   padding-top: 1vw;
   padding-bottom: 1vw;

@@ -26,3 +26,60 @@ function isValidName(name) {
 function isValidPassword(password) {
     return lowercaseRegexp.test(password) && password.length <= 255 && password.length >= 8 && upperCaseRegexp.test(password) && numbersRegexp.test(password) && specialSymbolsRegexp.test(password)
 }
+
+
+async function makeRequest(url, options = {}) {
+    if(!options.headers) {
+        options.headers = {}
+    }
+
+    options.headers["authorization"] = `Bearer ${localStorage.getItem("token")}`
+    options.headers["content-type"] = options.headers["content-type"] ?? "application/json"
+    options.mode = options.mode ?? "cors"
+        
+    let response = await fetch(url, options)
+
+    if(response.status === 200) {
+        return await response.json()
+    } else if(response.status === 401) {
+        if(await refreshTokens()) {
+            return makeRequest(url, options)
+        } else {
+            location.href = "/login"
+        }
+    } else {
+        if(response.headers.get("content-type") == "application/json") {
+            return await response.json()
+        } else {
+            console.log(response)
+            return null
+        }
+    }
+}
+
+async function refreshTokens() {
+    const response = await fetch("http://api.todolist.local/auth/refresh-token", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+        mode: "cors",
+        body: JSON.stringify({
+            refresh_token: localStorage.getItem("refresh_token")
+        })
+    })
+
+
+    if(response.status === 200) {
+        const result = await response.json()
+
+
+        localStorage.setItem("token", result.access_token)
+        localStorage.setItem("refresh_token", result.refresh_token)
+        return true
+    } else {
+        localStorage.removeItem("token")
+        localStorage.removeItem("refresh_token")
+        return false
+    }
+}

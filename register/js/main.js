@@ -3,11 +3,19 @@ const emailTextField = document.querySelector(".register-form__email")
 const nameTextField = document.querySelector(".register-form__name")
 const passwordTextField = document.querySelector(".register-form__password")
 const registerButton = document.querySelector(".register-form__btn-register")
+const requestErrorLabel = document.querySelector(".register-form__form-request-error")
+
+const visibleRequestErrorLabelClassName = "register-form__form-request-error_visible"
 
 async function onSubmit(ev) {
     ev.preventDefault()
     if(ev.submitter == registerButton) {
         return
+    }
+
+    if(requestErrorLabel.classList.contains(visibleRequestErrorLabelClassName)) {
+        requestErrorLabel.classList.remove(visibleRequestErrorLabelClassName)
+        requestErrorLabel.innerText = "1"
     }
 
     let { value: email } = emailTextField, { value: name } = nameTextField, { value: password } = passwordTextField
@@ -68,7 +76,7 @@ async function onSubmit(ev) {
     }
 
   try { 
-        const result = await fetch("http://api.todolist.local/auth/register", {
+        const registerResult = await fetch("http://api.todolist.local/auth/register", {
             method: "POST",
             mode: "cors",
             headers: {
@@ -79,17 +87,49 @@ async function onSubmit(ev) {
             })
         })
     
-        if(result.ok) {
-            const response = await result.json()
+        if(registerResult.ok) {
+            const registerResponse = await registerResult.json()
 
-            localStorage.setItem("token", response.access_token)
-            localStorage.setItem("refresh_token", response.refresh_token)
+            localStorage.setItem("token", registerResponse.access_token)
+            localStorage.setItem("refresh_token", registerResponse.refresh_token)
 
+            try {
+                const response = await makeRequest("http://api.todolist.local/user")
+                
+                if(response?.status) {
+                    const user = response.result
+                    
+                    localStorage.setItem("id", user.id)
+                    localStorage.setItem("email", user.email)
+                    localStorage.setItem("name", user.name)
+
+                    location.href = "/"
+                } else {
+                    if(response) {
+                        requestErrorLabel.classList.add(visibleRequestErrorLabelClassName)
+
+                        requestErrorLabel.innerText = response.error
+                    }
+                }
+            } catch (err) {
+                console.log(err)   
+            }
+
+        } else {
+            if(registerResult.headers.get("content-type") == "application/json") {
+                const registerResponse = await registerResult.json()
+                requestErrorLabel.classList.add(visibleRequestErrorLabelClassName)
+
+                requestErrorLabel.innerText = registerResponse.error
+            }
         }
   } catch (err) {
       console.log(err)
   }
 }
+
+
+
 
 registerButton.addEventListener("click", onSubmit)
 registerForm.addEventListener("submit", onSubmit)

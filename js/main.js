@@ -66,7 +66,8 @@ clearAllButton.addEventListener("click", () => {
 })
 
 logoutButton.addEventListener("click", () => {
-    localStorage.removeItem("token")
+    localStorage.clear()
+    indexedDB.deleteDatabase(dbName)
     location.href = "/login/"
 })
 
