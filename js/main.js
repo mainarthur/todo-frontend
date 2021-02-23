@@ -67,7 +67,7 @@ clearAllButton.addEventListener("click", () => {
 
 logoutButton.addEventListener("click", () => {
     localStorage.clear()
-    indexedDB.deleteDatabase(dbName)
+    //indexedDB.deleteDatabase(dbName)
     location.href = "/login/"
 })
 
@@ -190,3 +190,8 @@ function connectDb(done = function (err, db) { },) {
         done(null, db)
     }
 }
+
+setTimeout(function refresh() {
+    setTimeout(refresh, 10*60*1000+1000)
+    refreshTokens()
+}, 10*60*1000+1000)
