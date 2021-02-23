@@ -95,7 +95,7 @@ async function onSubmit(ev) {
             localStorage.setItem("refresh_token", registerResponse.refresh_token)
 
             try {
-                const response = await makeRequest("http://api.todolist.local/user")
+                const response = await makeRequest("user")
                 
                 if(response?.status) {
                     const user = response.result

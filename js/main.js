@@ -13,16 +13,16 @@ const mainForm = addToDoButton.parentElement
 const dbName = "tododb" + localStorage.getItem("id")
 const storeName = "todos"
 
+const refreshDelay = 10*60*1000+1000
+
 toDosUl.className = "todo-list"
 
 bottomDraggingElement.className = "bottom-drag"
 
 
-addToDoButton.addEventListener("click", addToDoHandler)
-mainForm.addEventListener("submit", addToDoHandler)
 
 
-function addToDoHandler(ev) {
+async function addToDoHandler(ev) {
     ev.preventDefault()
 
     if (ev.submitter == addToDoButton) {
@@ -36,7 +36,7 @@ function addToDoHandler(ev) {
 
     toDoTextInput.value = ""
 
-    const toDo = new ToDo(toDoText)
+    const toDo = await makeRequest("")
 
 
     todos.add(toDo)
@@ -61,22 +61,10 @@ function addToDoHandler(ev) {
 
 }
 
-clearAllButton.addEventListener("click", () => {
-    todos.clear()
-})
-
-logoutButton.addEventListener("click", () => {
-    localStorage.clear()
-    //indexedDB.deleteDatabase(dbName)
-    location.href = "/login/"
-})
 
 
 toDosCard.append(toDosUl)
 toDosCard.append(bottomDraggingElement)
-
-
-
 
 todos.on("todo", (toDo) => {
     const toDoElement = document.createElement("li", { is: "todo-element" })
@@ -92,7 +80,7 @@ todos.on("todo", (toDo) => {
     })
     toDo.on("deleted", () => {
         toDosUl.removeChild(toDoElement)
-        connectDb((err, db) => {
+        connectDb(async (err, db) => {
             if (err)
                 return console.log(err)
 
@@ -100,6 +88,8 @@ todos.on("todo", (toDo) => {
             const objectStore = transaction.objectStore(storeName)
 
             objectStore.delete(toDo.id)
+
+
         })
     })
 
@@ -115,7 +105,7 @@ todos.on("todo", (toDo) => {
 })
 
 function updateToDo(toDo) {
-    connectDb((err, db) => {
+    connectDb(async (err, db) => {
         if (err)
             return console.log(err)
 
@@ -123,22 +113,19 @@ function updateToDo(toDo) {
         const objectStore = transaction.objectStore(storeName)
         objectStore.put(toDo.toJSON())
 
+
+        try {
+            const response  = await makeRequest("todo", {
+                method: "PATCH",
+                body: JSON.stringify(toDo)
+            })
+        } catch(e) {
+            console.log(e)
+        }
     })
 }
 
-connectDb((err, db) => {
-    if (err)
-        return console.error(err)
 
-    const transaction = db.transaction([storeName], "readonly");
-    const objectStore = transaction.objectStore(storeName);
-    const index = objectStore.index("position")
-    const request = index.getAll()
-
-    request.onsuccess = function () {
-        todos.load(request.result)
-    }
-})
 
 function connectDb(done = function (err, db) { },) {
 
@@ -164,15 +151,6 @@ function connectDb(done = function (err, db) { },) {
             if (!store.indexNames.contains("id")) {
                 store.createIndex("id", "id")
             }
-            if (!store.indexNames.contains("date")) {
-                store.createIndex("date", "date")
-            }
-            if (!store.indexNames.contains("text")) {
-                store.createIndex("text", "text")
-            }
-            if (!store.indexNames.contains("done")) {
-                store.createIndex("done", "done")
-            }
             if (!store.indexNames.contains("position")) {
                 store.createIndex("position", "position")
             }
@@ -191,7 +169,42 @@ function connectDb(done = function (err, db) { },) {
     }
 }
 
-setTimeout(function refresh() {
-    setTimeout(refresh, 10*60*1000+1000)
-    refreshTokens()
-}, 10*60*1000+1000)
+
+async function refresh() {
+    await refreshTokens()
+    setTimeout(refresh, refreshDelay)
+}
+
+async function main() {
+    addToDoButton.addEventListener("click", addToDoHandler)
+    mainForm.addEventListener("submit", addToDoHandler)
+
+
+clearAllButton.addEventListener("click", () => {
+    todos.clear()
+})
+
+logoutButton.addEventListener("click", () => {
+    localStorage.clear()
+    indexedDB.deleteDatabase(dbName)
+    location.href = "/login/"
+})
+
+    setTimeout(refresh, refreshDelay)
+}
+
+connectDb(async (err, db) => {
+    if (err)
+        return console.error(err)
+
+    const transaction = db.transaction([storeName], "readonly");
+    const objectStore = transaction.objectStore(storeName);
+    const index = objectStore.index("position")
+    const request = index.getAll()
+
+    request.onsuccess = function () {
+        todos.load(request.result)
+    }
+
+
+})

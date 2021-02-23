@@ -7,7 +7,7 @@ class ToDoList extends EventEmitter {
 
     add(toDo) {
         if(this.get(toDo.id)) {
-            throw new Error("To-Do list already contains that To-Do")
+            
         }
 
 

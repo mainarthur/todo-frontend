@@ -2,14 +2,15 @@ class ToDo extends EventEmitter {
     _id
     _done
     _text
-    _date
+    _createdAt
     _position
+
     constructor(toDoText = "", id, done = false, date, position = -1) {
         super()
         this.text = toDoText
         this._id = id || uuidv4()
         this.done = done
-        this._date = date || Date.now()
+        this._createdAt = date || Date.now()
         this._position = position
     }
 
@@ -29,8 +30,8 @@ class ToDo extends EventEmitter {
         return this._id
     }
 
-    get date() {
-        return this._date
+    get createdAt() {
+        return this._createdAt
     }
 
     get done() {
@@ -63,7 +64,7 @@ class ToDo extends EventEmitter {
             id: this.id,
             done: this.done,
             text:this.text,
-            date: this._date,
+            date: this._createdAt,
             position:this.position
         }
     }

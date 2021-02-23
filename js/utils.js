@@ -28,7 +28,7 @@ function isValidPassword(password) {
 }
 
 
-async function makeRequest(url, options = {}) {
+async function makeRequest(endpoint, options = {}) {
     if(!options.headers) {
         options.headers = {}
     }
@@ -37,13 +37,13 @@ async function makeRequest(url, options = {}) {
     options.headers["content-type"] = options.headers["content-type"] ?? "application/json"
     options.mode = options.mode ?? "cors"
         
-    let response = await fetch(url, options)
+    let response = await fetch(`http://api.todolist.local/${endpoint}`, options)
 
     if(response.status === 200) {
         return await response.json()
     } else if(response.status === 401) {
         if(await refreshTokens()) {
-            return makeRequest(url, options)
+            return makeRequest(endpoint, options)
         } else {
             location.href = "/login"
         }
@@ -78,8 +78,7 @@ async function refreshTokens() {
         localStorage.setItem("refresh_token", result.refresh_token)
         return true
     } else {
-        localStorage.removeItem("token")
-        localStorage.removeItem("refresh_token")
+        localStorage.clear()
         return false
     }
 }
