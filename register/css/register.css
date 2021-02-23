@@ -184,10 +184,10 @@ ul {
     width: 100%;
   }
 }
-.login-form {
+.register-form {
   text-align: left;
 }
-.login-form__form-request-error {
+.register-form__form-request-error {
   opacity: 0;
   padding: 3px;
   color: #ff494c;
@@ -196,11 +196,11 @@ ul {
   margin-top: 1px;
   text-align: center;
 }
-.login-form__form-request-error_visible {
+.register-form__form-request-error_visible {
   transition: opacity 1s linear;
   opacity: 1;
 }
-.login-form__btn-login {
+.register-form__btn-register {
   padding-top: 1vw;
   padding-bottom: 1vw;
   width: 100%;
@@ -209,25 +209,25 @@ ul {
   color: white;
   background-color: #5ea9ff;
 }
-.login-form__btn-login:hover {
+.register-form__btn-register:hover {
   background-color: #ff5c7f;
 }
-.login-form__btn-login:active {
+.register-form__btn-register:active {
   background-color: #ff494c;
 }
-.login-form__register {
+.register-form__login {
   text-align: center;
   font-weight: 300;
   margin-top: 0.8vw;
 }
-.login-form__register-link {
+.register-form__login-link {
   color: #5ea9ff;
 }
-.login-form__register-link:hover {
+.register-form__login-link:hover {
   color: #ff5c7f;
 }
-.login-form__register-link:active {
+.register-form__login-link:active {
   color: #ff494c;
 }
 
-/*# sourceMappingURL=login.css.map */
+/*# sourceMappingURL=register.css.map */

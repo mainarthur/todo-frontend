@@ -2,8 +2,6 @@
 @import "todo";
 
 .new-task {
-  
-
   &__btn {
     &-add {
       display: inline-block;
@@ -35,24 +33,25 @@
 
 .todos {
   &__btn {
-    &-clear {
-      position: relative;
-      right: 0;
-      top: 0;
-      color: $base-color;
-    }
+    position: relative;
+    right: 0;
+    top: 0;
+    color: $base-color;
+    background-color: white;
 
-    &-clear:focus {
+    &:focus {
       outline: none;
     }
 
-    &-clear:hover {
+    &:hover {
       color: $base-color-lighter;
     }
 
-    &-clear:active {
+    &:active {
       color: $secondary-color;
     }
+
+    width: 30%;
   }
 
   &_center {
@@ -62,7 +61,6 @@
 
   text-align: left;
 }
-
 
 .todo-list {
   padding: 0;
@@ -76,4 +74,4 @@
 .bottom-drag {
   width: 100%;
   height: 1.5vw;
-} 
+}

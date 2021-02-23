@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="/login/css/login.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/js/views/TextField.js"></script>
+    <script src="/js/utils.js"></script>
+    <script>
+        if(localStorage.getItem("token"))
+            location.href = "/"
+    </script>
 </head>
 
 <body class="body">
@@ -18,6 +23,8 @@
                     <div is="text-field" class="login-form__password" placeholder="Password" type="password" name="Password" error-text="Password is invalid"></div>
 
                     <div class="btn login-form__btn-login ">LOGIN</div>
+                    <div class="login-form__form-request-error">&amp;</div>
+                    <div class="login-form__register"><a class="login-form__register-link" href="/register/">Register</a> if you don't have an account yet.</div>
                 </form>
             </div>
         </div>

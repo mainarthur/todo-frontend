@@ -60,6 +60,12 @@ class ToDoElement extends HTMLLIElement {
         const self = this
 
         this.addEventListener("mousedown", (ev) => {
+            if(ev.button != 0)
+                return;
+
+            if(ev?.target?.classList?.contains(ToDoElement.DONE_CHECKBOX_CLASSNAME) || ev?.target?.classList?.contains(ToDoElement.DELETE_BUTTON_CLASSNAME))
+                return;
+                
             const rect = this.getBoundingClientRect()
             const shiftX = ev.clientX - rect.left
             const shiftY = ev.clientY - rect.top
@@ -133,6 +139,7 @@ class ToDoElement extends HTMLLIElement {
                                 prevToDoPosition = 0
                             }
 
+                            console.log(prevToDoPosition, nextToDoPosition)
                             toDo.position = (prevToDoPosition + nextToDoPosition) / 2
 
                         } else if (target.classList.contains("bottom-drag")) {
@@ -144,6 +151,7 @@ class ToDoElement extends HTMLLIElement {
                             if (self.previousElementSibling) {
                                 const prevToDo = todos.get(self.previousElementSibling.id)
 
+                                console.log(prevToDo.position, todos.size())
                                 toDo.position = (prevToDo.position + todos.size() + 1) / 2
                             }
                         } else if(target == ghostDiv) {
@@ -155,11 +163,12 @@ class ToDoElement extends HTMLLIElement {
                             if(!self.nextElementSibling) {
                                 if (self.previousElementSibling) {
                                     const prevToDo = todos.get(self.previousElementSibling.id)
-    
+                                    
+                                    console.log(prevToDo.position, todos.size())
                                     toDo.position = (prevToDo.position + todos.size() + 1) / 2
                                 }
                             } else {
-                                const nextToDoPosition = todos.get(self?.nextElementSibling.id).position
+                                const nextToDoPosition = todos.get(self.nextElementSibling.id).position
                                 let prevToDoPosition
 
                                 if (self.previousElementSibling) {
@@ -169,7 +178,8 @@ class ToDoElement extends HTMLLIElement {
                                 } else {
                                     prevToDoPosition = 0
                                 }
-    
+                                
+                                console.log(prevToDoPosition, nextToDoPosition)
                                 toDo.position = (prevToDoPosition + nextToDoPosition) / 2
                             }
                         }

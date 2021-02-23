@@ -1,39 +1,34 @@
-const users = [
-    {email: "test@test.com", id: 1, password: "123"},
-    {email: "root@test.com", id: 2, password: "123"},
-]
+const registerForm = document.querySelector(".register-form__form")
+const emailTextField = document.querySelector(".register-form__email")
+const nameTextField = document.querySelector(".register-form__name")
+const passwordTextField = document.querySelector(".register-form__password")
+const registerButton = document.querySelector(".register-form__btn-register")
+const requestErrorLabel = document.querySelector(".register-form__form-request-error")
 
-
-const loginButton = document.querySelector(".login-form__btn-login")
-const loginForm = document.querySelector(".login-form__form")
-
-const emailTextField = document.querySelector(".login-form__email")
-const passwordTextField = document.querySelector(".login-form__password")
-
-
-const requestErrorLabel = document.querySelector(".login-form__form-request-error")
-
-const visibleRequestErrorLabelClassName = "login-form__form-request-error_visible"
+const visibleRequestErrorLabelClassName = "register-form__form-request-error_visible"
 
 async function onSubmit(ev) {
-    if(ev.submitter == loginButton) {
+    ev.preventDefault()
+    if(ev.submitter == registerButton) {
         return
     }
-
 
     if(requestErrorLabel.classList.contains(visibleRequestErrorLabelClassName)) {
         requestErrorLabel.classList.remove(visibleRequestErrorLabelClassName)
         requestErrorLabel.innerText = "1"
     }
 
-    let { value: email } = emailTextField, { value: password } = passwordTextField
+    let { value: email } = emailTextField, { value: name } = nameTextField, { value: password } = passwordTextField
 
     email = email.trim()
-
+    name = name.trim()
     password = password.trim()
 
     if(emailTextField.invalid) {
         emailTextField.invalid = false
+    }
+    if(nameTextField.invalid) {
+        nameTextField.invalid = false
     }
     if(passwordTextField.invalid) {
         passwordTextField.invalid = false
@@ -42,40 +37,62 @@ async function onSubmit(ev) {
     if(email === "") {
         emailTextField.errorText = "Email is required!"
         emailTextField.invalid = true
+
+        return
     }
 
     if(!isValidEmail(email)) {
         emailTextField.errorText = "Email format is invalid!"
         emailTextField.invalid = true
+
+
+        return
     }
 
-    if(password === "") {
+    if(name === "") {
+        nameTextField.errorText = "Name is required!"
+        nameTextField.invalid = true
+
+        return
+    }
+
+    if(!isValidName(name)) {
+        nameTextField.errorText = "Please, enter correct name!"
+        nameTextField.invalid = true
+
+        return
+    }
+
+    if(password == "") {
         passwordTextField.errorText = "Password is required!"
         passwordTextField.invalid = true
+        return
     }
 
     if(!isValidPassword(password)) {
+        console.log(password)
         passwordTextField.errorText = "Use 8 or more characters with a mix of lowercase and uppercase letters, numbers & symbols"
         passwordTextField.invalid = true
+        return
     }
 
-    try {
-        const loginResponse = await fetch("http://api.todolist.local/auth/login", {
+  try { 
+        const registerResult = await fetch("http://api.todolist.local/auth/register", {
             method: "POST",
             mode: "cors",
             headers: {
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
-                email, password
+                email, password, name
             })
         })
     
-        if(loginResponse.ok) {
-            const loginResult = await loginResponse.json()
+        if(registerResult.ok) {
+            const registerResponse = await registerResult.json()
 
-            localStorage.setItem("token", loginResult.access_token)
-            localStorage.setItem("refresh_token", loginResult.refresh_token)
+            localStorage.setItem("token", registerResponse.access_token)
+            localStorage.setItem("refresh_token", registerResponse.refresh_token)
 
             try {
                 const response = await makeRequest("user")
@@ -100,19 +117,20 @@ async function onSubmit(ev) {
             }
 
         } else {
-            if(loginResponse.headers.get("content-type") == "application/json") {
-                const registerResponse = await loginResponse.json()
+            if(registerResult.headers.get("content-type") == "application/json") {
+                const registerResponse = await registerResult.json()
                 requestErrorLabel.classList.add(visibleRequestErrorLabelClassName)
 
                 requestErrorLabel.innerText = registerResponse.error
             }
         }
-    } catch(e) {
-        console.log(e)
-    }
-    
+  } catch (err) {
+      console.log(err)
+  }
 }
 
 
-loginButton.addEventListener("click", onSubmit)
-loginForm.addEventListener("submit", onSubmit)
+
+
+registerButton.addEventListener("click", onSubmit)
+registerForm.addEventListener("submit", onSubmit)

@@ -45,6 +45,7 @@
   color: #ff494c;
   font-weight: 300;
   font-size: large;
+  margin-top: 1px;
 }
 .textfield__label_error-visible {
   transition: opacity 1s linear;

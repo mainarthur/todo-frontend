@@ -18,6 +18,7 @@
   padding: 5px;
   text-align: center;
   user-select: none;
+  display: inline-block;
 }
 
 .root {
@@ -156,19 +157,21 @@ ul {
 .todos {
   text-align: left;
 }
-.todos__btn-clear {
+.todos__btn {
   position: relative;
   right: 0;
   top: 0;
   color: #ff494c;
+  background-color: white;
+  width: 30%;
 }
-.todos__btn-clear:focus {
+.todos__btn:focus {
   outline: none;
 }
-.todos__btn-clear:hover {
+.todos__btn:hover {
   color: #ff5c7f;
 }
-.todos__btn-clear:active {
+.todos__btn:active {
   color: #5ea9ff;
 }
 .todos_center {

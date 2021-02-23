@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <title>To-do List</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="/register/css/register.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/views/TextField.js"></script>
+    <script src="/js/utils.js"></script>
+    <script>
+        if(localStorage.getItem("token"))
+            location.href = "/"
+    </script>
+</head>
+
+<body class="body">
+    <div class="root">
+        <h1 class="title">TO-DO LIST</h1>
+        <div class="card">
+            <div class="register-form">
+                <form class="register-form__form">
+                    <div is="text-field" class="register-form__email" placeholder="Email" name="email" error-text="Enter your <b>CORRECT</b> email"></div>
+                    <div is="text-field" class="register-form__name" placeholder="Name" name="Name" error-text="Enter your <b>CORRECT</b> name"></div>
+                    <div is="text-field" class="register-form__password" placeholder="Password" type="password" name="Password" error-text="Password is too weak"></div>
+
+                    <div class="btn register-form__btn-register ">REGISTER</div>
+                    <div class="register-form__form-request-error">&amp;</div>
+                    <div class="register-form__login">Already have an account? <a href="/login/" class="register-form__login-link">Login</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/register/js/main.js"></script>
+</body>
+
+</html>

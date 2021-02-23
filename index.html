@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/TextField.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (localStorage.getItem("token") == null) {
+            location.href = "/login/"
+        }
+    </script>
 </head>
 
 <body class="body">
@@ -15,16 +20,20 @@
         <div class="card">
             <div class="new-task">
                 <form class="new-task__form" id="main-form">
-                    <div is="text-field" class="new-task__input" type="text" id="todo-text" placeholder="NEW TASK"></div>
+                    <div is="text-field" class="new-task__input" type="text" id="todo-text" placeholder="NEW TASK">
+                    </div>
                     <div id="add-todo" class="btn new-task__btn-add">ADD</div>
                 </form>
             </div>
         </div>
         <div class="card" id="todos-card">
             <div class="todos">
-                <div class="btn todos_center">
-                    <div class="todos__btn-clear">
+                <div class="todos_center">
+                    <div class="btn todos__btn todos__btn-clear">
                         CLEAR ALL
+                    </div>
+                    <div class="btn todos__btn todos__btn-logout">
+                        LOGOUT
                     </div>
                 </div>
             </div>
@@ -43,3 +52,4 @@
 </body>
 
 </html>
+

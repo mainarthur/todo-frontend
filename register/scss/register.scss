@@ -1,7 +1,7 @@
 @import "../../scss/styles";
 @import "../../scss/TextField";
 
-.login-form {
+.register-form {
   &__form {
     &-request-error {
 		&_visible {
@@ -19,8 +19,8 @@
     }
   }
 
-  &__btn {
-    &-login {
+  &__btn { 
+    &-register {
       padding-top: 1vw;
       padding-bottom: 1vw;
       width: 100%;
@@ -30,21 +30,21 @@
       background-color: $secondary-color;
     }
 
-    &-login:hover {
+    &-register:hover {
       background-color: $base-color-lighter;
     }
 
-    &-login:active {
+    &-register:active {
       background-color: $base-color;
     }
   }
 
-  &__register {
+  &__login {
     &-link {
       &:hover {
         color: $base-color-lighter;
       }
-  
+
       &:active {
         color: $base-color;
       }
@@ -54,11 +54,9 @@
 
     text-align: center;
 
-   font-weight: 300;
-   margin-top: 0.8vw;
+    font-weight: 300;
+    margin-top: 0.8vw;
   }
 
   text-align: left;
 }
-
-
