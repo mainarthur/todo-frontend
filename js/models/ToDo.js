@@ -4,6 +4,7 @@ class ToDo extends EventEmitter {
     _text
     _createdAt
     _position
+    _lastUpdate
 
     constructor(toDoText = "", id, done = false, date, position = -1) {
         super()
@@ -38,6 +39,10 @@ class ToDo extends EventEmitter {
         return this._done
     }
 
+    get lastUpdate() {
+        return this._lastUpdate
+    }
+
     set done(val) {
         this._done = val
         
@@ -64,14 +69,15 @@ class ToDo extends EventEmitter {
             id: this.id,
             done: this.done,
             text:this.text,
-            date: this._createdAt,
-            position:this.position
+            createdAt: this._createdAt,
+            position:this.position,
+            lastUpdate: this._lastUpdate
         }
     }
 
     static fromJSON(obj) {
-        const { text, id, done, date, position } = obj 
+        const { text, id, done, createdAt, position, lastUpdate } = obj 
 
-        return new ToDo(text, id, done, date, position)
+        return new ToDo(text, id, done, createdAt, position, lastUpdate)
     }
 }
