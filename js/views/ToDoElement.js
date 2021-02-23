@@ -139,6 +139,7 @@ class ToDoElement extends HTMLLIElement {
                                 prevToDoPosition = 0
                             }
 
+                            console.log(prevToDoPosition, nextToDoPosition)
                             toDo.position = (prevToDoPosition + nextToDoPosition) / 2
 
                         } else if (target.classList.contains("bottom-drag")) {
@@ -150,6 +151,7 @@ class ToDoElement extends HTMLLIElement {
                             if (self.previousElementSibling) {
                                 const prevToDo = todos.get(self.previousElementSibling.id)
 
+                                console.log(prevToDo.position, todos.size())
                                 toDo.position = (prevToDo.position + todos.size() + 1) / 2
                             }
                         } else if(target == ghostDiv) {
@@ -161,7 +163,8 @@ class ToDoElement extends HTMLLIElement {
                             if(!self.nextElementSibling) {
                                 if (self.previousElementSibling) {
                                     const prevToDo = todos.get(self.previousElementSibling.id)
-    
+                                    
+                                    console.log(prevToDo.position, todos.size())
                                     toDo.position = (prevToDo.position + todos.size() + 1) / 2
                                 }
                             } else {
@@ -175,7 +178,8 @@ class ToDoElement extends HTMLLIElement {
                                 } else {
                                     prevToDoPosition = 0
                                 }
-    
+                                
+                                console.log(prevToDoPosition, nextToDoPosition)
                                 toDo.position = (prevToDoPosition + nextToDoPosition) / 2
                             }
                         }

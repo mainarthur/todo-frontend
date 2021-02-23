@@ -28,7 +28,7 @@ function isValidPassword(password) {
 }
 
 
-async function makeRequest(endpoint, options = {}) {
+async function makeRequest(endpoint, options = {}, secondCall = false) {
     if(!options.headers) {
         options.headers = {}
     }
@@ -41,9 +41,9 @@ async function makeRequest(endpoint, options = {}) {
 
     if(response.status === 200) {
         return await response.json()
-    } else if(response.status === 401) {
+    } else if(response.status === 401 && !secondCall) {
         if(await refreshTokens()) {
-            return makeRequest(endpoint, options)
+            return makeRequest(endpoint, options, true)
         } else {
             location.href = "/login"
         }

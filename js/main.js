@@ -6,14 +6,14 @@ const toDosUl = document.createElement("ul", { is: "todo-list" })
 const clearAllButton = document.querySelector(".todos__btn-clear")
 const logoutButton = document.querySelector(".todos__btn-logout")
 const toDosCard = document.querySelector("#todos-card")
-const bottomDraggingElement =  document.createElement("div")
+const bottomDraggingElement = document.createElement("div")
 
 const mainForm = addToDoButton.parentElement
 
 const dbName = "tododb" + localStorage.getItem("id")
 const storeName = "todos"
 
-const refreshDelay = 10*60*1000+1000
+const refreshDelay = 9 * 60 * 1000 + 1000
 
 toDosUl.className = "todo-list"
 
@@ -29,36 +29,46 @@ async function addToDoHandler(ev) {
         return
     }
 
-    const { value: toDoText } = toDoTextInput
-    if (toDoText.trim() === "") {
+    const { value: text } = toDoTextInput
+    if (text.trim() === "") {
         return alert("Todo can't be empty")
     }
 
     toDoTextInput.value = ""
 
-    const toDo = await makeRequest("")
+    try {
+        const toDoResponse = await makeRequest("todo", {
+            method: "POST",
+            body: JSON.stringify({
+                text
+            })
+        })
+
+        if (!!toDoResponse) {
+            const toDo = ToDo.fromJSON(toDoResponse.result)
 
 
-    todos.add(toDo)
 
+            connectDb((err, db) => {
+                if (err)
+                    return console.log(err)
 
-    connectDb((err, db) => {
-        if (err)
-            return console.log(err)
+                const transaction = db.transaction([storeName], "readwrite")
+                const objectStore = transaction.objectStore(storeName)
+                const request = objectStore.add(toDo.toJSON())
 
-        const transaction = db.transaction([storeName], "readwrite")
-        const objectStore = transaction.objectStore(storeName)
-        const request = objectStore.add(toDo.toJSON())
+                request.onsuccess = function () {
 
-        request.onsuccess = function () {
-            console.log(toDo)
+                    todos.add(toDo)
+                    localStorage.setItem("lastupdate", toDo.lastUpdate)
+
+                }
+
+            })
         }
-
-        request.onerror = function () {
-            console.log(request)
-        }
-    })
-
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 
@@ -66,42 +76,63 @@ async function addToDoHandler(ev) {
 toDosCard.append(toDosUl)
 toDosCard.append(bottomDraggingElement)
 
+function toDoUpdatedHandler(toDo) {
+    const toDoElement = document.getElementById(toDo.id)
+    toDoElement?.render()
+    updateToDo(toDo)
+}
+
+function toDoDeletedHandler(toDo) {
+    const toDoElement = document.getElementById(toDo.id)
+    if (toDoElement) {
+        toDosUl.removeChild(toDoElement)
+    }
+
+    connectDb(async (err, db) => {
+        if (err)
+            return console.log(err)
+
+        const transaction = db.transaction([storeName], "readwrite")
+        const objectStore = transaction.objectStore(storeName)
+
+        objectStore.delete(toDo.id)
+
+        try {
+            const response = await makeRequest(`todo/${toDo.id}`, {
+                method: "DELETE"
+            })
+
+            if(response) {
+                localStorage.setItem("lastupdate", response.result.lastUpdate)
+            }
+        } catch (e) {
+            console.log(e)
+
+        }
+    })
+}
+
 todos.on("todo", (toDo) => {
     const toDoElement = document.createElement("li", { is: "todo-element" })
     toDoElement.id = toDo.id
 
-    toDo.on("status-updated", (status) => {
-        toDoElement.render()
-        updateToDo(toDo)
-    })
-    toDo.on("text-updated", (text) => {
-        toDoElement.render()
-        updateToDo(toDo)
-    })
-    toDo.on("deleted", () => {
-        toDosUl.removeChild(toDoElement)
-        connectDb(async (err, db) => {
-            if (err)
-                return console.log(err)
 
-            const transaction = db.transaction([storeName], "readwrite")
-            const objectStore = transaction.objectStore(storeName)
-
-            objectStore.delete(toDo.id)
-
-
-        })
-    })
-
-    toDo.on("position-changed", () => {
-        console.log("New position")
-        console.log(toDo.position)
-        updateToDo(toDo)
-    })
+    toDo.on("status-updated", toDoUpdatedHandler)
+    toDo.on("text-updated", toDoUpdatedHandler)
+    toDo.on("deleted", toDoDeletedHandler)
+    toDo.on("position-changed", toDoUpdatedHandler)
 
     toDoElement.render()
     toDosUl.append(toDoElement)
 
+    connectDb((err, db) => {
+        if (err)
+            return console.log(err)
+
+        const transaction = db.transaction([storeName], "readwrite")
+        const objectStore = transaction.objectStore(storeName)
+        objectStore.put(toDo.toJSON())
+    })
 })
 
 function updateToDo(toDo) {
@@ -113,13 +144,16 @@ function updateToDo(toDo) {
         const objectStore = transaction.objectStore(storeName)
         objectStore.put(toDo.toJSON())
 
-
         try {
-            const response  = await makeRequest("todo", {
+            const response = await makeRequest("todo", {
                 method: "PATCH",
                 body: JSON.stringify(toDo)
             })
-        } catch(e) {
+
+            if(response) {
+                localStorage.setItem("lastupdate", response.result.lastUpdate)
+            }
+        } catch (e) {
             console.log(e)
         }
     })
@@ -176,21 +210,43 @@ async function refresh() {
 }
 
 async function main() {
+
     addToDoButton.addEventListener("click", addToDoHandler)
     mainForm.addEventListener("submit", addToDoHandler)
 
 
-clearAllButton.addEventListener("click", () => {
-    todos.clear()
-})
+    clearAllButton.addEventListener("click", () => {
+        todos.clear()
+    })
 
-logoutButton.addEventListener("click", () => {
-    localStorage.clear()
-    indexedDB.deleteDatabase(dbName)
-    location.href = "/login/"
-})
+    logoutButton.addEventListener("click", () => {
+        localStorage.clear()
+        indexedDB.deleteDatabase(dbName)
+        location.href = "/login/"
+    })
 
     setTimeout(refresh, refreshDelay)
+
+    try {
+        let endpoint = "todo"
+        if (localStorage.getItem("lastupdate")) {
+            endpoint += `?from=${localStorage.getItem("lastupdate")}`
+        } else {
+            localStorage.setItem("lastupdate", Date.now())
+        }
+        const response = await makeRequest(endpoint)
+
+        if (response) {
+            console.log(response.results)
+            todos.load(response.results)
+
+            if(response.results.length > 0) {
+                localStorage.setItem("lastupdate", Math.max(...response.results.map(e=> e.lastUpdate)))
+            }
+        }
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 connectDb(async (err, db) => {
@@ -208,3 +264,5 @@ connectDb(async (err, db) => {
 
 
 })
+
+main()
