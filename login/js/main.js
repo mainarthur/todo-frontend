@@ -10,9 +10,20 @@ const loginForm = document.querySelector(".login-form__form")
 const emailTextField = document.querySelector(".login-form__email")
 const passwordTextField = document.querySelector(".login-form__password")
 
-function onSubmit(ev) {
+
+const requestErrorLabel = document.querySelector(".login-form__form-request-error")
+
+const visibleRequestErrorLabelClassName = "login-form__form-request-error_visible"
+
+async function onSubmit(ev) {
     if(ev.submitter == loginButton) {
         return
+    }
+
+
+    if(requestErrorLabel.classList.contains(visibleRequestErrorLabelClassName)) {
+        requestErrorLabel.classList.remove(visibleRequestErrorLabelClassName)
+        requestErrorLabel.innerText = "1"
     }
 
     let { value: email } = emailTextField, { value: password } = passwordTextField
@@ -48,6 +59,57 @@ function onSubmit(ev) {
         passwordTextField.invalid = true
     }
 
+    try {
+        const loginResponse = await fetch("http://api.todolist.local/auth/login", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                email, password
+            })
+        })
+    
+        if(loginResponse.ok) {
+            const loginResult = await loginResponse.json()
+
+            localStorage.setItem("token", loginResult.access_token)
+            localStorage.setItem("refresh_token", loginResult.refresh_token)
+
+            try {
+                const response = await makeRequest("http://api.todolist.local/user")
+                
+                if(response?.status) {
+                    const user = response.result
+                    
+                    localStorage.setItem("id", user.id)
+                    localStorage.setItem("email", user.email)
+                    localStorage.setItem("name", user.name)
+
+                    location.href = "/"
+                } else {
+                    if(response) {
+                        requestErrorLabel.classList.add(visibleRequestErrorLabelClassName)
+
+                        requestErrorLabel.innerText = response.error
+                    }
+                }
+            } catch (err) {
+                console.log(err)   
+            }
+
+        } else {
+            if(loginResponse.headers.get("content-type") == "application/json") {
+                const registerResponse = await loginResponse.json()
+                requestErrorLabel.classList.add(visibleRequestErrorLabelClassName)
+
+                requestErrorLabel.innerText = registerResponse.error
+            }
+        }
+    } catch(e) {
+        console.log(e)
+    }
     
 }
 

@@ -24,7 +24,7 @@ function isValidName(name) {
 }
 
 function isValidPassword(password) {
-    return lowercaseRegexp.test(password) && password.length <= 255 && password.length >= 8 && upperCaseRegexp.test(password) && numbersRegexp.test(password) && specialSymbolsRegexp.test(password)
+    return password.match(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,255}$/) != null
 }
 
 

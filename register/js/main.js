@@ -70,6 +70,7 @@ async function onSubmit(ev) {
     }
 
     if(!isValidPassword(password)) {
+        console.log(password)
         passwordTextField.errorText = "Use 8 or more characters with a mix of lowercase and uppercase letters, numbers & symbols"
         passwordTextField.invalid = true
         return

@@ -187,6 +187,19 @@ ul {
 .login-form {
   text-align: left;
 }
+.login-form__form-request-error {
+  opacity: 0;
+  padding: 3px;
+  color: #ff494c;
+  font-weight: 300;
+  font-size: large;
+  margin-top: 1px;
+  text-align: center;
+}
+.login-form__form-request-error_visible {
+  transition: opacity 1s linear;
+  opacity: 1;
+}
 .login-form__btn-login {
   padding-top: 1vw;
   padding-bottom: 1vw;
